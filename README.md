@@ -1,24 +1,35 @@
 # Tycoon Empire
 
-Game simulasi manajemen bisnis berbasis browser. Bangun perusahaan, kelola produksi, atur harga pasar, lakukan riset, dan kembangkan nilai perusahaan.
+Game tycoon berbasis browser, tanpa proses build dan tanpa dependensi JavaScript tambahan.
 
-## Cara menjalankan
-Buka file `index.html` langsung dengan Chrome atau browser modern. Tidak perlu instalasi, server, framework, atau koneksi internet. Progress tersimpan di localStorage browser.
+## Menjalankan game
 
-## Cara bermain
-1. Mulai dengan modal awal dan satu fasilitas pertanian.
-2. Buka **Bisnis** untuk membeli fasilitas baru.
-3. Buka **Pasar** untuk mengatur harga dan menjual stok.
-4. Buka **Produksi** untuk meningkatkan fasilitas.
-5. Bangun Laboratorium R&D untuk memperoleh poin riset.
-6. Tekan **Akhiri Hari** untuk menjalankan produksi, penjualan otomatis, dan biaya operasional.
+1. Buka `index.html` langsung di browser modern.
+2. Progres disimpan otomatis ke `localStorage` setiap 15 detik, setelah aksi penting, dan saat halaman ditinggalkan.
+3. Gunakan tombol **Simpan** untuk menyimpan kapan saja atau **Game Baru** untuk reset.
 
-## Aktifkan GitHub Pages
-1. Buka **Settings** pada repository.
-2. Pilih **Pages**.
-3. Pada **Build and deployment**, pilih **Deploy from a branch**.
-4. Pilih branch `main` dan folder `/(root)`, lalu klik **Save**.
-5. Setelah deployment selesai, game akan tersedia melalui URL GitHub Pages repository.
+Koneksi internet hanya diperlukan untuk memuat font dan ikon eksternal; mekanik game tetap berjalan jika aset CDN tidak tersedia.
 
-## Teknologi
-HTML, CSS, dan JavaScript murni. Seluruh game berada dalam satu file agar mudah dibuka dan dikembangkan.
+## Siklus permainan
+
+- **Akhiri Hari** menjalankan produksi, penjualan otomatis, biaya operasional, pasar, bunga utang, dan event risiko.
+- **Pasar** memungkinkan penjualan stok manual dan pengaturan harga jual otomatis.
+- **Bisnis** membeli fasilitas; **Produksi** meningkatkan output; **Riset** membuka bonus permanen.
+- **Keuangan** menampilkan transaksi dan pembayaran utang.
+- Menangkan permainan dengan mencapai valuasi **US$180.000** dalam 150 hari.
+- Perusahaan pailit jika kas negatif selama dua hari berturut-turut; gagal mencapai target sampai tenggat juga mengakhiri permainan.
+
+## Verifikasi
+
+`test_game.py` adalah smoke/regression test berbasis Playwright. Test mencakup startup, semua tab, validasi harga, tick harian, save/load, payload XSS pada save, simulasi strategi dari awal sampai menang, kondisi pailit, batas waktu, dan layout mobile 360 px serta 320 px.
+
+Test membutuhkan Python dengan paket `playwright` dan browser Chromium. Dependensi tersebut hanya untuk pengujian, bukan untuk menjalankan game.
+
+```bash
+python test_game.py
+```
+
+## Struktur
+
+- `index.html` — aplikasi lengkap (HTML, CSS, JavaScript) agar dapat dibuka langsung.
+- `test_game.py` — pengujian browser otomatis.
